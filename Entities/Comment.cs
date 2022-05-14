@@ -10,5 +10,8 @@
 
         public DateTime UpdateDate { get; set; }
 
+        public WorkItem WorkItem { get; set; }
+        public int WorkItemId { get; set; }
+
     }
 }

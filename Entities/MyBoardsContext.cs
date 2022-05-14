@@ -34,6 +34,34 @@ namespace MyBoards.Entities
                   eb.Property(wi => wi.Activity).HasMaxLength(200);
                   eb.Property(wi => wi.RemaningWork).HasPrecision(14, 2);
                   eb.Property(wi => wi.Prioryti).HasDefaultValue(1);
+                  eb.HasMany(w => w.Comments) // jeden do wielu
+                  .WithOne(c => c.WorkItem)
+                  .HasForeignKey(c => c.WorkItemId);
+
+                  eb.HasOne(w => w.Author)
+                  .WithMany(u => u.WorkItems)
+                  .HasForeignKey(w => w.AuthorId);
+
+                  eb.HasMany(w => w.Tags) // wiele do wielu tabela łacząca
+                  .WithMany(t => t.WorkItems)
+                  .UsingEntity<WorkItemTag>(
+
+                      w => w.HasOne(wit => wit.Tag)
+                      .WithMany()
+                      .HasForeignKey(wit => wit.TagId),
+
+                      w => w.HasOne(wit => wit.WorkItem)
+                      .WithMany()
+                      .HasForeignKey(wit => wit.WorkItemId),
+
+                       wit =>
+                       {
+                           wit.HasKey(x => new { x.TagId, x.WorkItemId });
+                           wit.Property(x => x.PublicationDate).HasDefaultValueSql("getutcdate()");
+                       }
+
+
+                      );
               });
 
             modelBuilder.Entity<Comment>(eb =>
@@ -46,6 +74,9 @@ namespace MyBoards.Entities
                 .HasOne(u => u.Address)
                 .WithOne(u => u.User)
                 .HasForeignKey<Address>(a => a.UserId);
+
+            modelBuilder.Entity<WorkItemTag>()
+                 .HasKey(c => new { c.TagId, c.WorkItemId });
 
 
         }
