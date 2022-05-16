@@ -4,15 +4,20 @@ namespace MyBoards.Entities
 {
     public class MyBoardsContext : DbContext
     {
-        public MyBoardsContext( DbContextOptions<MyBoardsContext> options) : base(options)
+        public MyBoardsContext(DbContextOptions<MyBoardsContext> options) : base(options)
         {
-          
+
         }
         public DbSet<WorkItem> WorkItems { get; set; }
+        public DbSet<Issue> Issues { get; set; }
+        public DbSet<Epic> Epics { get; set; }
+        public DbSet<Task> Tasks { get; set; }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<WorkItemState> workItemStates{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,16 +28,36 @@ namespace MyBoards.Entities
             //    .Property(x => x.Area)
             //    .HasColumnType("varchar(200)");
 
+            modelBuilder.Entity<WorkItemState>()
+                .Property(s => s.Value)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            modelBuilder.Entity<Epic>()
+                .Property(wi => wi.EnddDate).
+                HasPrecision(3);
+
+            modelBuilder.Entity<Task>()
+                .Property(wi => wi.Activity)
+                .HasMaxLength(200);
+            modelBuilder.Entity<Task>()
+                .Property(wi => wi.RemaningWork)
+                .HasPrecision(14, 2);
+            modelBuilder.Entity<Issue>()
+                .Property(wi => wi.Effort)
+                .HasColumnType("decimal(5,2)");
+
+
 
             modelBuilder.Entity<WorkItem>(eb =>
               {
-                  eb.Property(x => x.State).IsRequired();
+
+                  eb.HasOne(w => w.State)
+                   .WithMany()
+                   .HasForeignKey(w => w.StateId);
+
                   eb.Property(x => x.Area).HasColumnType("varchar(200)");
                   eb.Property(wi => wi.InterationPath).HasColumnName("Iteration_Path");
-                  eb.Property(wi => wi.Effort).HasColumnType("decimal(5,2)");
-                  eb.Property(wi => wi.EnddDate).HasPrecision(3);
-                  eb.Property(wi => wi.Activity).HasMaxLength(200);
-                  eb.Property(wi => wi.RemaningWork).HasPrecision(14, 2);
                   eb.Property(wi => wi.Prioryti).HasDefaultValue(1);
                   eb.HasMany(w => w.Comments) // jeden do wielu
                   .WithOne(c => c.WorkItem)
