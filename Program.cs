@@ -21,8 +21,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-
+// sprawdzenie czy baza jest z danymi jesli nie to jest wykonywana migracja
+using var scope = app.Services.CreateScope();
+var dbContex = scope.ServiceProvider.GetService<MyBoardsContext>();
+var pendingMigration = dbContex.Database.GetPendingMigrations();
+if(pendingMigration.Any())
+{
+    dbContex.Database.Migrate();
+}
 
 app.Run();
 
