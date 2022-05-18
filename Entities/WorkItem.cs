@@ -29,7 +29,7 @@ namespace MyBoards.Entities
      
         public int Id { get; set; } 
         
-        public WorkItemState State { get; set; }
+        public WorkItemStates State { get; set; }
 
         public int StateId { get; set; }
 

@@ -17,7 +17,7 @@ namespace MyBoards.Entities
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<WorkItemState> workItemStates{ get; set; }
+        public DbSet<WorkItemStates> workItemStates{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,7 @@ namespace MyBoards.Entities
             //    .Property(x => x.Area)
             //    .HasColumnType("varchar(200)");
 
-            modelBuilder.Entity<WorkItemState>()
+            modelBuilder.Entity<WorkItemStates>()
                 .Property(s => s.Value)
                 .IsRequired()
                 .HasMaxLength(60);
