@@ -12,8 +12,8 @@ using MyBoards.Entities;
 namespace MyBoards.Migrations
 {
     [DbContext(typeof(MyBoardsContext))]
-    [Migration("20220518045339_AdditionWorkItemStateSeed")]
-    partial class AdditionWorkItemStateSeed
+    [Migration("20220520042051_AdditionalWorkItemStates")]
+    partial class AdditionalWorkItemStates
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -165,37 +165,37 @@ namespace MyBoards.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("WorkItem");
                 });
 
-            modelBuilder.Entity("MyBoards.Entities.WorkItemState", b =>
+            modelBuilder.Entity("MyBoards.Entities.WorkItemStates", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.ToTable("workItemStates");
+                    b.ToTable("WorkItemStates");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            id = 1,
                             Value = "To Do"
                         },
                         new
                         {
-                            Id = 2,
+                            id = 2,
                             Value = "Doing"
                         },
                         new
                         {
-                            Id = 3,
+                            id = 3,
                             Value = "Done"
                         });
                 });
@@ -297,7 +297,7 @@ namespace MyBoards.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyBoards.Entities.WorkItemState", "State")
+                    b.HasOne("MyBoards.Entities.WorkItemStates", "State")
                         .WithMany()
                         .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade)

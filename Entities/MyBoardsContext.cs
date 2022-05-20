@@ -17,7 +17,7 @@ namespace MyBoards.Entities
         public DbSet<Tag> Tags { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<WorkItemStates> workItemStates{ get; set; }
+        public DbSet<WorkItemStates> WorkItemStates{ get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -104,8 +104,20 @@ namespace MyBoards.Entities
                 .WithOne(u => u.User)
                 .HasForeignKey<Address>(a => a.UserId);
 
-            modelBuilder.Entity<WorkItemTag>()
-                 .HasKey(c => new { c.TagId, c.WorkItemId });
+            //modelBuilder.Entity<WorkItemTag>()
+            //     .HasKey(c => new { c.TagId, c.WorkItemId });
+
+            modelBuilder.Entity<WorkItemStates>() // dodawanie defaultowych danych seedowanie
+                .HasData(new WorkItemStates() {id=1, Value = "To Do" },
+                new WorkItemStates() { id = 2, Value = "Doing" },
+                new WorkItemStates() { id = 3, Value = "Done" });
+
+            modelBuilder.Entity<Tag>()
+                .HasData(new Tag() { Id = 1, Value = "Web" },
+                new Tag() { Id = 2, Value = "UI" },
+                new Tag() { Id = 3, Value = "Desktop" },
+                new Tag() { Id = 4, Value = "API" },
+                new Tag() { Id = 5, Value = "Services" });
 
 
         }

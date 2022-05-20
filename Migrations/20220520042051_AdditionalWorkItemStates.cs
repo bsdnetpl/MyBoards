@@ -4,19 +4,19 @@
 
 namespace MyBoards.Migrations
 {
-    public partial class AdditionWorkItemStateSeed : Migration
+    public partial class AdditionalWorkItemStates : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
-                table: "WorkItemStates",
-                column: "Value",
-                value: "On Hold");
+                    table: "WorkItemStates",
+                    column: "Value",
+                    value: "On Hold");
 
             migrationBuilder.InsertData(
-                table: "WorkItemStates",
-                column: "Value",
-                value: "Rejected");
+                  table: "WorkItemStates",
+                  column: "Value",
+                  value: "Rejected");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -27,12 +27,9 @@ namespace MyBoards.Migrations
                 keyValue: "On Hold");
 
             migrationBuilder.DeleteData(
-               table: "WorkItemStates",
-               keyColumn: "Value",
-               keyValue: "Rejected");
-
-
-
+                 table: "WorkItemStates",
+                 keyColumn: "Value",
+                 keyValue: "Rejected");
         }
     }
 }
